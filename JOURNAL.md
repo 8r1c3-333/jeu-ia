@@ -79,3 +79,5 @@ Ajoute un bouclier qui absorbe la prochaine bombe, visible dans le HUD puis met 
 - Ce que l'assistant a fait mieux ou plus vite que moi : je n'ai jamais fait de python ou javascript donc il a été plus efficace que moi sur tout.
 - Ce qu'il a mal fait ou ce que j'ai dû corriger : La modification suivante : réinitialisation du nombre de cristaux à chaque début de partie et le score à 0 qui a dû être repris plusieurs fois.
 - Ce que je ne lui laisserais pas faire : Faire un jeu plus évolué que celui-ci car même cela était difficile par moment pour Copilot.
+
+lien du jeu : https://8r1c3-333.github.io/jeu-ia/
