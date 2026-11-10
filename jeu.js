@@ -29,6 +29,7 @@ let combo = 0;
 let chronoCombo = 0;
 let objets = [];
 let chronoSpawn = 0;
+let chronoRalentissement = 0;
 let dernierTemps = 0;
 let panier = { x: LARGEUR / 2 - REGLAGES.largeurPanier / 2, y: HAUTEUR - 74, largeur: REGLAGES.largeurPanier, hauteur: REGLAGES.hauteurPanier, vitesse: 0, cibleX: null };
 let touches = {};
@@ -58,7 +59,7 @@ function demarrerPartie() {
   preparerAudio();
   etat = "jeu";
   score = 0; vies = REGLAGES.viesDepart; niveau = 1; tempsJeu = 0;
-  combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45;
+  combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45; chronoRalentissement = 0;
   panier.x = LARGEUR / 2 - panier.largeur / 2; panier.cibleX = null; panier.vitesse = 0;
   cristaux = 0; // Réinitialiser le compteur de cristaux au début de la partie
   ecranTitre.classList.add("cache");
@@ -87,9 +88,11 @@ function terminerPartie() {
 function creerObjet() {
   const tirage = Math.random();
   let type = CRISTAL;
-  if (tirage < Math.min(0.42, REGLAGES.hasardBombe + (niveau - 1) * 0.03)) type = BOMBE;
+  const hasardBombe = Math.min(0.42, REGLAGES.hasardBombe + (niveau - 1) * 0.03);
+  if (tirage < hasardBombe) type = BOMBE;
+  else if (tirage < hasardBombe + REGLAGES.hasardGlace) type = GLACE;
   else if (tirage > 1 - REGLAGES.hasardDore) type = DORE;
-  const rayon = type === DORE ? 17 : type === BOMBE ? 15 : 13;
+  const rayon = type === DORE ? 17 : type === BOMBE ? 15 : type === GLACE ? 15 : 13;
   const vitesse = Math.min(REGLAGES.vitesseChuteMax, REGLAGES.vitesseChute + (niveau - 1) * 28);
   objets.push({
     type: type, x: hasard(rayon + 12, LARGEUR - rayon - 12), y: -rayon - 8, rayon: rayon,
@@ -119,6 +122,12 @@ function toucherObjet(objet) {
   if (objet.type === BOMBE) {
     creerParticules(objet.x, objet.y, COULEURS.magenta, 28, 320);
     perdreVie(objet.x, objet.y, true);
+    return;
+  }
+  if (objet.type === GLACE) {
+    chronoRalentissement = REGLAGES.dureeRalentissement;
+    creerParticules(objet.x, objet.y, COULEURS.glace, 22, 240);
+    ajouterTexte(objet.x, objet.y - 10, "RALENTISSEMENT", COULEURS.glace);
     return;
   }
   combo += 1;
@@ -164,6 +173,10 @@ function mettreAJour(dt) {
     chronoCombo -= dt;
     if (chronoCombo <= 0) { chronoCombo = 0; combo = 0; }
   }
+  if (chronoRalentissement > 0) {
+    chronoRalentissement -= dt;
+    if (chronoRalentissement < 0) chronoRalentissement = 0;
+  }
   majPanier(dt);
   chronoSpawn -= dt;
   if (chronoSpawn <= 0) {
@@ -172,8 +185,9 @@ function mettreAJour(dt) {
   }
   for (let i = objets.length - 1; i >= 0; i--) {
     const objet = objets[i];
-    objet.y += objet.vitesse * dt;
-    objet.rotation += objet.vitesseRotation * dt;
+    const facteurVitesse = chronoRalentissement > 0 ? REGLAGES.facteurRalentissement : 1;
+    objet.y += objet.vitesse * facteurVitesse * dt;
+    objet.rotation += objet.vitesseRotation * facteurVitesse * dt;
     if (objet.type === DORE && Math.random() < dt * 18) {
       creerParticules(objet.x, objet.y, COULEURS.or, 1, 30);
     }
@@ -184,6 +198,7 @@ function mettreAJour(dt) {
       objets.splice(i, 1);
       if (objet.type === CRISTAL) perdreVie(objet.x, HAUTEUR - 30, false);
       else if (objet.type === DORE) ajouterTexte(objet.x, HAUTEUR - 40, "CRISTAL DORÉ PERDU", COULEURS.or);
+      else if (objet.type === GLACE) ajouterTexte(objet.x, HAUTEUR - 40, "CRISTAL DE GLACE PERDU", COULEURS.glace);
     }
   }
   majHud();

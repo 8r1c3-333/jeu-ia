@@ -16,8 +16,14 @@ Règle : tu colles ici le texte exact de tes prompts (copier-coller, pas de capt
 
 - Ce que Copilot a proposé : cristaux += 1;   finCristaux.textContent = cristaux;
 
-- Ce que j'ai accepté, modifié ou refusé, et pourquoi : j'ai accepté cristaux += 1; car le jeu fonctionnait normalement.
-J'ai refusé   finCristaux.textContent = cristaux; car le jeu crash.
+- Ce que j'ai accepté, modifié ou refusé, et pourquoi : - j'ai accepté car le jeu fonctionnait normalement. : cristaux += 1; 
+- finScore.textContent += " | Cristaux attrapés : " + cristaux;
+J'ai refusé car le jeu crash.   : - finCristaux.textContent = cristaux; 
+    - const cristauxAttrapes = document.getElementById("cristaux-attrapes");
+  cristauxAttrapes.textContent = "Cristaux attrapés : " + cristaux;
+    -   finCristaux.textContent = "Cristaux attrapés : " + cristaux;
+    - const cristauxElement = document.getElementById("fin-cristaux");
+  cristauxElement.textContent = cristaux; // Mettre à jour le texte avec le nombre de cristaux attrapés
 
 - Comment j'ai vérifié que ça marche : J'ai testé le jeu.
 
@@ -26,23 +32,27 @@ J'ai refusé   finCristaux.textContent = cristaux; car le jeu crash.
 - Ma question (prompt exact) :
 
 ```
-(colle-le ici)
+ comment le combo est-il remis à zéro ?
 ```
 
-- Une affirmation de la réponse que j'ai vérifiée :
-- Comment je l'ai vérifiée (un changement dans le code, un test dans le jeu) :
-- Résultat : exacte, fausse ou incomplète :
+- Une affirmation de la réponse que j'ai vérifiée : "Le combo est remis à zéro lorsque son chronomètre de 3 secondes expire, ou lorsqu’une bombe est attrapée ou qu’un cristal tombe sans être attrapé via perdreVie."
+
+- Comment je l'ai vérifiée (un changement dans le code, un test dans le jeu) : J'ai testé le jeu et, effectivement, le combo se  remet à 0 dès qu'un cristal est raté.
+
+- Résultat : exacte, fausse ou incomplète : Exacte.
 
 ## Défi 3 - Plan
 
 - Mon prompt en mode Plan :
 
 ```
-(colle-le ici)
+Je veux ajouter un cristal de glace, plus rare que le doré. Quand on l'attrape, tous les
+objets ralentissent pendant 4 secondes, puis reprennent leur vitesse. Respecte les règles de
+.github/copilot-instructions.md. Propose un plan sans modifier le code.
 ```
 
 - Le plan est dans le fichier `PLAN.md`.
-- Ce que j'ai changé dans le plan avant de le valider (étape retirée, ajoutée, contrainte) et pourquoi :
+- Ce que j'ai changé dans le plan avant de le valider (étape retirée, ajoutée, contrainte) et pourquoi : j'ai changé la rareté de GLACE de 2 vers 3% et représenté celui-ci par une tête d'ours blanc afin d'optimiser cette nouvelle option.
 
 ## Défi 4 - Agent
 

@@ -81,6 +81,10 @@ function dessinerPanier(ctx, panier, temps) {
   ctx.restore();
 }
 function dessinerCristal(ctx, objet, temps) {
+  if (objet.type === GLACE) {
+    dessinerOursBlanc(ctx, objet, temps);
+    return;
+  }
   const r = objet.rayon;
   const dore = objet.type === DORE;
   const couleur = dore ? COULEURS.or : COULEURS.cyan;
@@ -104,6 +108,45 @@ function dessinerCristal(ctx, objet, temps) {
   ctx.beginPath();
   ctx.arc(0, 0, r * 0.28, 0, Math.PI * 2);
   ctx.fill();
+}
+function dessinerOursBlanc(ctx, objet, temps) {
+  const r = objet.rayon;
+  const battement = 1 + 0.04 * Math.sin(temps * 5 + objet.pulsation);
+  ctx.scale(battement, battement);
+  ctx.shadowColor = COULEURS.glace;
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = COULEURS.glace;
+  ctx.beginPath();
+  ctx.arc(-r * 0.62, -r * 0.62, r * 0.42, 0, Math.PI * 2);
+  ctx.arc(r * 0.62, -r * 0.62, r * 0.42, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = COULEURS.blanc;
+  ctx.beginPath();
+  ctx.arc(-r * 0.34, -r * 0.18, r * 0.12, 0, Math.PI * 2);
+  ctx.arc(r * 0.34, -r * 0.18, r * 0.12, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#182331";
+  ctx.beginPath();
+  ctx.arc(-r * 0.34, -r * 0.18, r * 0.055, 0, Math.PI * 2);
+  ctx.arc(r * 0.34, -r * 0.18, r * 0.055, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#8fc9d8";
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.26, r * 0.38, r * 0.25, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#182331";
+  ctx.beginPath();
+  ctx.arc(0, r * 0.18, r * 0.1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "#182331";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(0, r * 0.25, r * 0.2, 0.15, Math.PI - 0.15);
+  ctx.stroke();
 }
 function dessinerBombe(ctx, objet, temps) {
   const r = objet.rayon * (1 + 0.09 * Math.sin(temps * 9 + objet.pulsation));
