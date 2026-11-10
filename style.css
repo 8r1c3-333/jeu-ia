@@ -178,6 +178,19 @@ canvas {
   text-align: right;
 }
 
+.bouclier {
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--gris);
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.4);
+}
+
+.bouclier.actif {
+  color: #ff6b9d;
+}
+
 .vies {
   display: flex;
   justify-content: flex-end;

@@ -9,6 +9,8 @@ Ce fichier est lu automatiquement par Copilot quand il travaille sur ce dépôt.
 - Cinq fichiers JavaScript chargés dans cet ordre : `config.js`, `audio.js`, `effets.js`, `dessin.js`, `jeu.js`.
 - `config.js` contient les réglages. `jeu.js` contient l'état, les entrées, les règles et la boucle.
 - Le jeu doit fonctionner en ouvrant `index.html`, sans serveur, y compris sur GitHub Pages.
+- Thème : arcade néon avec objets à attraper, ours blanc ralentisseur, coeur-bouclier et voiture de sport blanche en drift sur fond noir.
+- Règles : le coeur absorbe la prochaine bombe, l'ours blanc ralentit les objets quatre secondes, et les effets doivent rester visibles dans le HUD.
 
 ## Règles à respecter
 

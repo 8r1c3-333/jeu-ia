@@ -5,53 +5,52 @@ for (let i = 0; i < 64; i++) {
   etoiles.push({ x: Math.random() * LARGEUR, y: Math.random() * HAUTEUR * 0.6, taille: Math.random() + 0.5, phase: Math.random() * 6.28 });
 }
 function dessinerFond(ctx, temps) {
-  const degrade = ctx.createLinearGradient(0, 0, 0, HAUTEUR);
-  degrade.addColorStop(0, "#170b32");
-  degrade.addColorStop(0.52, COULEURS.fond);
-  degrade.addColorStop(1, "#02010a");
-  ctx.fillStyle = degrade;
+  ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, LARGEUR, HAUTEUR);
-
-  const horizon = HAUTEUR * 0.58;
-  const halo = ctx.createRadialGradient(LARGEUR / 2, horizon, 4, LARGEUR / 2, horizon, LARGEUR * 0.8);
-  halo.addColorStop(0, "rgba(255, 62, 165, 0.2)");
-  halo.addColorStop(0.5, "rgba(122, 92, 255, 0.07)");
-  halo.addColorStop(1, "rgba(0, 0, 0, 0)");
-  ctx.fillStyle = halo;
-  ctx.fillRect(0, 0, LARGEUR, HAUTEUR);
-
-  for (const etoile of etoiles) {
-    const lueur = 0.2 + 0.4 * Math.abs(Math.sin(temps + etoile.phase));
-    ctx.fillStyle = "rgba(245, 247, 255, " + lueur + ")";
-    ctx.fillRect(etoile.x, etoile.y, etoile.taille, etoile.taille);
-  }
-
-  ctx.strokeStyle = COULEURS.grille;
+  dessinerVoiture(ctx, temps);
+}
+function dessinerVoiture(ctx, temps) {
+  const derive = Math.sin(temps * 1.8) * 34;
+  const rotation = Math.sin(temps * 1.8) * 0.12;
+  ctx.save();
+  ctx.translate(LARGEUR / 2 + derive, HAUTEUR * 0.46);
+  ctx.rotate(rotation);
+  ctx.strokeStyle = COULEURS.blanc;
+  ctx.lineWidth = 3;
+  ctx.shadowColor = COULEURS.blanc;
+  ctx.shadowBlur = 12;
+  ctx.beginPath();
+  ctx.moveTo(-92, 18);
+  ctx.lineTo(-64, -10);
+  ctx.lineTo(-28, -24);
+  ctx.lineTo(35, -20);
+  ctx.lineTo(72, -4);
+  ctx.lineTo(98, 18);
+  ctx.lineTo(88, 34);
+  ctx.lineTo(-84, 34);
+  ctx.closePath();
+  ctx.moveTo(-45, -12);
+  ctx.lineTo(-24, -36);
+  ctx.lineTo(27, -32);
+  ctx.lineTo(55, -8);
+  ctx.moveTo(-88, 18);
+  ctx.lineTo(-106, 7);
+  ctx.moveTo(91, 18);
+  ctx.lineTo(110, 8);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(-57, 34, 15, 0, Math.PI * 2);
+  ctx.arc(61, 34, 15, 0, Math.PI * 2);
+  ctx.stroke();
   ctx.lineWidth = 1;
   ctx.beginPath();
-  for (let i = -9; i <= 9; i++) {
-    ctx.moveTo(LARGEUR / 2, horizon);
-    ctx.lineTo(LARGEUR / 2 + i * 78, HAUTEUR);
-  }
-  ctx.stroke();
-  for (let i = 0; i < 14; i++) {
-    const avancee = (i + (temps * 0.3) % 1) / 14;
-    const y = horizon + Math.pow(avancee, 2.3) * (HAUTEUR - horizon);
-    ctx.globalAlpha = 0.12 + avancee * 0.5;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(LARGEUR, y);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-
-  ctx.save();
-  ctx.shadowColor = COULEURS.magenta;
-  ctx.shadowBlur = 16;
-  ctx.strokeStyle = "rgba(255, 62, 165, 0.5)";
-  ctx.beginPath();
-  ctx.moveTo(0, horizon);
-  ctx.lineTo(LARGEUR, horizon);
+  ctx.moveTo(-18, -30);
+  ctx.lineTo(-10, -8);
+  ctx.lineTo(38, -7);
+  ctx.moveTo(-70, 5);
+  ctx.lineTo(-43, 5);
+  ctx.moveTo(66, 5);
+  ctx.lineTo(87, 5);
   ctx.stroke();
   ctx.restore();
 }
@@ -85,6 +84,10 @@ function dessinerCristal(ctx, objet, temps) {
     dessinerOursBlanc(ctx, objet, temps);
     return;
   }
+  if (objet.type === COEUR) {
+    dessinerCoeur(ctx, objet, temps);
+    return;
+  }
   const r = objet.rayon;
   const dore = objet.type === DORE;
   const couleur = dore ? COULEURS.or : COULEURS.cyan;
@@ -108,6 +111,23 @@ function dessinerCristal(ctx, objet, temps) {
   ctx.beginPath();
   ctx.arc(0, 0, r * 0.28, 0, Math.PI * 2);
   ctx.fill();
+}
+function dessinerCoeur(ctx, objet, temps) {
+  const r = objet.rayon;
+  const battement = 1 + 0.08 * Math.sin(temps * 7 + objet.pulsation);
+  ctx.rotate(objet.rotation);
+  ctx.scale(battement, battement);
+  ctx.shadowColor = COULEURS.coeur;
+  ctx.shadowBlur = 20;
+  ctx.strokeStyle = COULEURS.coeur;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, r);
+  ctx.lineTo(-r * 0.9, -r * 0.05);
+  ctx.arc(-r * 0.45, -r * 0.35, r * 0.45, Math.PI, 0);
+  ctx.arc(r * 0.45, -r * 0.35, r * 0.45, Math.PI, 0);
+  ctx.closePath();
+  ctx.stroke();
 }
 function dessinerOursBlanc(ctx, objet, temps) {
   const r = objet.rayon;
