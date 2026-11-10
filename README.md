@@ -1,18 +1,21 @@
-# Pluie de Néon - jeu modèle
+# Pluie de Néon
 
-Jeu d'arcade web en HTML, CSS et JavaScript pour le cours Outils IA, Bachelor 1, Ynov. Ce dépôt est la base de départ des défis GitHub Copilot : le jeu fonctionne déjà, à toi de l'améliorer.
+Jeu d'arcade web en HTML, CSS et JavaScript pour le cours Outils IA, Bachelor 1, Ynov.
 
 ## Le but
 
-Déplace le rail néon en bas de l'écran et attrape les cristaux qui tombent. Évite les bombes. Enchaîne les prises pour faire monter le multiplicateur.
+Déplace le panier en bas de l'écran et attrape les objets qui tombent. Évite les bombes et utilise les bonus pour survivre plus longtemps.
 
 - Cristal cyan : 10 points.
 - Cristal doré, plus rare : 50 points.
-- Bombe : tu perds une vie et ton combo retombe à zéro.
+- Ours blanc `GLACE`, rare : ralentit tous les objets pendant 4 secondes.
+- Coeur `COEUR`, rare : active un bouclier qui absorbe la prochaine bombe.
+- Bombe : tu perds une vie et ton combo retombe à zéro, sauf si le bouclier l'absorbe.
 - Trois vies au départ.
 - Le combo reste actif 3 secondes. À partir de 3 cristaux, le multiplicateur passe à x2, puis x3, x4 et x5.
 - Toutes les 18 secondes, le niveau augmente : les objets tombent plus vite, arrivent plus souvent et les bombes se multiplient.
 - Le meilleur score est conservé dans le navigateur avec `localStorage`.
+- Le décor est noir et affiche une voiture de sport blanche dessinée en lignes sur le canvas.
 
 ## Lancer le jeu
 
@@ -34,18 +37,18 @@ Pour publier sur GitHub Pages : dans le dépôt, **Settings**, **Pages**, **Depl
 | `config.js` | couleurs, vitesses, vies, raretés, réglages du jeu |
 | `audio.js` | sons synthétisés avec l'API Web Audio, sans fichier audio |
 | `effets.js` | particules, textes flottants, secousse d'écran et flash |
-| `dessin.js` | décor néon, rail, cristaux et bombes |
+| `dessin.js` | voiture, panier, ours blanc, coeur, cristaux et bombes |
 | `jeu.js` | état, entrées clavier et tactile, collisions, score, écrans, boucle |
 | `index.html`, `style.css` | la page, les écrans et l'interface |
 | `JOURNAL.md` | tes prompts et le compte rendu des défis |
 | `IDEES_DEFIS.md` | huit extensions à réaliser avec Copilot |
 | `.github/copilot-instructions.md` | consignes lues par Copilot sur ce dépôt |
 
-Le JavaScript fait moins de 600 lignes au total. Il est découpé en fichiers courts, sans classe ni framework, avec des commentaires en français.
+Le jeu reste découpé en fichiers courts, sans classe ni framework, avec des commentaires en français.
 
 ## Personnaliser
 
-La plupart des réglages sont dans `config.js` : palette, vitesse du rail, vitesse de chute, intervalle entre les objets, durée d'un niveau, durée du combo, nombre de vies. Commence par là avant de toucher à la logique.
+La plupart des réglages sont dans `config.js` : palette, vitesse du panier, vitesse de chute, intervalle entre les objets, rareté des bonus, durée d'un niveau, durée du combo et nombre de vies. Commence par là avant de toucher à la logique.
 
 Pour vérifier la syntaxe après une modification :
 

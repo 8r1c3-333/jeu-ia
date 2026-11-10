@@ -69,13 +69,13 @@ Ajoute un bouclier qui absorbe la prochaine bombe, visible dans le HUD puis met 
 
 ## Défi 5 - Pull request et revue
 
-- Lien de ma pull request :
-- Commentaire de la revue Copilot que j'ai traité (le texte) :
-- Ma décision (corrigé ou refusé) et pourquoi :
+- Lien de ma pull request : https://github.com/8r1c3-333/jeu-ia/pull/1
+- Commentaire de la revue Copilot que j'ai traité (le texte) : "Review effectuée : le bouclier est correctement intégré au spawn, au HUD, à la collision avec la prochaine bombe et au reset de partie. Le rendu de fond et les nouveaux types d'objet sont cohérents avec le reste du jeu. Vérification navigateur effectuée sans erreur applicative ; seul le favicon manquant génère un 404, sans impact sur cette PR. Je ne relève aucun point bloquant."
+- Ma décision (corrigé ou refusé) et pourquoi : 
 - Lien de mon jeu publié :
 
 ## Bilan (3 lignes maximum)
 
-- Ce que l'assistant a fait mieux ou plus vite que moi :
-- Ce qu'il a mal fait ou ce que j'ai dû corriger :
-- Ce que je ne lui laisserais pas faire :
+- Ce que l'assistant a fait mieux ou plus vite que moi : je n'ai jamais fait de python ou javascript donc il a été plus efficace que moi sur tout.
+- Ce qu'il a mal fait ou ce que j'ai dû corriger : La modification suivante : réinitialisation du nombre de cristaux à chaque début de partie et le score à 0 qui a dû être repris plusieurs fois.
+- Ce que je ne lui laisserais pas faire : Faire un jeu plus évolué que celui-ci car même cela était difficile par moment pour Copilot.
