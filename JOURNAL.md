@@ -1,8 +1,8 @@
 # Journal de bord
 
-Nom et prénom : 
-Dépôt : 
-Outil utilisé (Copilot, modèle affiché) : 
+Nom et prénom : MEYAPIN Brice
+Dépôt : https://github.com/8r1c3-333/jeu-ia
+Outil utilisé (Copilot, modèle affiché) : Copilot
 
 Règle : tu colles ici le texte exact de tes prompts (copier-coller, pas de capture). Une entrée par défi. Ce que tu n'as pas gardé compte autant que ce que tu as gardé.
 
@@ -11,12 +11,15 @@ Règle : tu colles ici le texte exact de tes prompts (copier-coller, pas de capt
 - Commentaire ou début de code que j'ai écrit :
 
 ```
-(colle-le ici)
+// compte les cristaux attrapés dans la variable cristaux
 ```
 
-- Ce que Copilot a proposé :
-- Ce que j'ai accepté, modifié ou refusé, et pourquoi :
-- Comment j'ai vérifié que ça marche :
+- Ce que Copilot a proposé : cristaux += 1;   finCristaux.textContent = cristaux;
+
+- Ce que j'ai accepté, modifié ou refusé, et pourquoi : j'ai accepté cristaux += 1; car le jeu fonctionnait normalement.
+J'ai refusé   finCristaux.textContent = cristaux; car le jeu crash.
+
+- Comment j'ai vérifié que ça marche : J'ai testé le jeu.
 
 ## Défi 2 - Ask
 
