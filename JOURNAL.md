@@ -59,13 +59,13 @@ objets ralentissent pendant 4 secondes, puis reprennent leur vitesse. Respecte l
 - Mon prompt en mode Agent :
 
 ```
-(colle-le ici)
+Ajoute un bouclier qui absorbe la prochaine bombe, visible dans le HUD puis met un fond noir avec un modèle type 2D d'une voiture de sport représentée en lignes blanches qui fait des drifts en boucle
 ```
 
-- Fichiers que l'agent a modifiés :
-- Ce que j'ai relu dans les changements avant d'accepter :
-- Ce que j'ai refusé, corrigé ou fait refaire :
-- Mon jeu après l'agent (une phrase) :
+- Fichiers que l'agent a modifiés : config.js, dessin.js, index.html, jeu.js, style.css.
+- Ce que j'ai relu dans les changements avant d'accepter : 
+- Ce que j'ai refusé, corrigé ou fait refaire : Je lui ai fait refaire la voiture qui drift, le résultat n'est toujours pas ce que j'attendais mais je ne pousse pas plus car c'est clairement une limite.
+- Mon jeu après l'agent (une phrase) : une voiture mal représentée tourne en arrière-plan et des coeurs apparaissent pour donner le bouclier au joueur.
 
 ## Défi 5 - Pull request et revue
 

@@ -11,6 +11,7 @@ const elementCombo = document.getElementById("combo");
 const elementComboValeur = document.getElementById("combo-valeur");
 const elementComboJauge = document.getElementById("combo-jauge");
 const elementVies = document.getElementById("vies").getElementsByTagName("i");
+const elementBouclier = document.getElementById("bouclier");
 const boutonSon = document.getElementById("bouton-son");
 const boutonJouer = document.getElementById("bouton-jouer");
 const boutonRejouer = document.getElementById("bouton-rejouer");
@@ -30,6 +31,7 @@ let chronoCombo = 0;
 let objets = [];
 let chronoSpawn = 0;
 let chronoRalentissement = 0;
+let bouclier = false;
 let dernierTemps = 0;
 let panier = { x: LARGEUR / 2 - REGLAGES.largeurPanier / 2, y: HAUTEUR - 74, largeur: REGLAGES.largeurPanier, hauteur: REGLAGES.hauteurPanier, vitesse: 0, cibleX: null };
 let touches = {};
@@ -53,13 +55,15 @@ function majHud() {
     elementVies[i].classList.toggle("perdue", i >= vies);
   }
   elementComboJauge.style.transform = "scaleX(" + Math.max(0, chronoCombo / REGLAGES.dureeCombo) + ")";
+  elementBouclier.textContent = bouclier ? "BOUCLIER : PRÊT" : "BOUCLIER : VIDE";
+  elementBouclier.classList.toggle("actif", bouclier);
 }
 // Lancer, terminer et recommencer une partie.
 function demarrerPartie() {
   preparerAudio();
   etat = "jeu";
   score = 0; vies = REGLAGES.viesDepart; niveau = 1; tempsJeu = 0;
-  combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45; chronoRalentissement = 0;
+  combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45; chronoRalentissement = 0; bouclier = false;
   panier.x = LARGEUR / 2 - panier.largeur / 2; panier.cibleX = null; panier.vitesse = 0;
   cristaux = 0; // Réinitialiser le compteur de cristaux au début de la partie
   ecranTitre.classList.add("cache");
@@ -90,9 +94,10 @@ function creerObjet() {
   let type = CRISTAL;
   const hasardBombe = Math.min(0.42, REGLAGES.hasardBombe + (niveau - 1) * 0.03);
   if (tirage < hasardBombe) type = BOMBE;
-  else if (tirage < hasardBombe + REGLAGES.hasardGlace) type = GLACE;
+  else if (tirage < hasardBombe + REGLAGES.hasardCoeur) type = COEUR;
+  else if (tirage < hasardBombe + REGLAGES.hasardCoeur + REGLAGES.hasardGlace) type = GLACE;
   else if (tirage > 1 - REGLAGES.hasardDore) type = DORE;
-  const rayon = type === DORE ? 17 : type === BOMBE ? 15 : type === GLACE ? 15 : 13;
+  const rayon = type === DORE ? 17 : type === BOMBE ? 15 : type === GLACE ? 15 : type === COEUR ? 15 : 13;
   const vitesse = Math.min(REGLAGES.vitesseChuteMax, REGLAGES.vitesseChute + (niveau - 1) * 28);
   objets.push({
     type: type, x: hasard(rayon + 12, LARGEUR - rayon - 12), y: -rayon - 8, rayon: rayon,
@@ -130,6 +135,12 @@ function toucherObjet(objet) {
     ajouterTexte(objet.x, objet.y - 10, "RALENTISSEMENT", COULEURS.glace);
     return;
   }
+  if (objet.type === COEUR) {
+    bouclier = true;
+    creerParticules(objet.x, objet.y, COULEURS.coeur, 20, 220);
+    ajouterTexte(objet.x, objet.y - 10, "BOUCLIER PRÊT", COULEURS.coeur);
+    return;
+  }
   combo += 1;
   chronoCombo = REGLAGES.dureeCombo;
   const multi = multiplicateur();
@@ -145,6 +156,12 @@ function toucherObjet(objet) {
   secouer(3);
 }
 function perdreVie(x, y, bombe) {
+  if (bombe && bouclier) {
+    bouclier = false;
+    creerParticules(x, y, COULEURS.coeur, 24, 260);
+    ajouterTexte(panier.x + panier.largeur / 2, panier.y - 28, "BOMBE ABSORBÉE", COULEURS.coeur);
+    return;
+  }
   vies -= 1;
   combo = 0;
   chronoCombo = 0;
@@ -199,6 +216,7 @@ function mettreAJour(dt) {
       if (objet.type === CRISTAL) perdreVie(objet.x, HAUTEUR - 30, false);
       else if (objet.type === DORE) ajouterTexte(objet.x, HAUTEUR - 40, "CRISTAL DORÉ PERDU", COULEURS.or);
       else if (objet.type === GLACE) ajouterTexte(objet.x, HAUTEUR - 40, "CRISTAL DE GLACE PERDU", COULEURS.glace);
+      else if (objet.type === COEUR) ajouterTexte(objet.x, HAUTEUR - 40, "COEUR PERDU", COULEURS.coeur);
     }
   }
   majHud();
